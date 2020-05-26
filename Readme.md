@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Мария Кротова](https://up.htmlacademy.ru/javascript/20/user/1128847).
-* Наставник: [Магомед Кандаев](https://htmlacademy.ru/profile/magomedkandaev)
+* Наставник: [Магомед Кандаев](https://htmlacademy.ru/profile/magomedkandaev).
 .
 
 ---
