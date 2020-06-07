@@ -4,8 +4,8 @@ var NUMBER_OF_ADS = 8;
 var PLACE_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var ROOMS_NUMBERS = [1, 2, 3];
 var GUESTS_NUMBERS = [1, 2, 3];
-var PLACES_CHECKIN = ['12:00', '13:00', '14:00'];
-var PLACES_CHECKOUT = ['12:00', '13:00', '14:00'];
+var PLACE_CHECKINS = ['12:00', '13:00', '14:00'];
+var PLACE_CHECKOUTS = ['12:00', '13:00', '14:00'];
 var PLACE_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PLACE_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var LOCATION_X_MIN = 0;
@@ -31,19 +31,20 @@ var getRandomNumberInInterval = function (min, max) {
 };
 
 var shuffleArray = function (elements) {
+  var array = elements.slice(0);
   for (var i = elements.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
-    var l = elements[i];
-    elements[i] = elements[j];
-    elements[j] = l;
+    var l = array[i];
+    array[i] = array[j];
+    array[j] = l;
   }
-  // Это ничего что я использую такие странные переменные в этой функции?
-  return elements;
+  return array;
 };
 
-var pruningArray = function (elements) {
+var sliceArray = function (elements) {
   shuffleArray(elements);
   elements.slice(getRandomIndex(elements));
+  return elements;
 };
 
 var generateSimilarAd = function (quantity) {
@@ -62,11 +63,11 @@ var generateSimilarAd = function (quantity) {
         type: getRandomElement(PLACE_TYPES),
         rooms: getRandomElement(ROOMS_NUMBERS),
         guests: getRandomElement(GUESTS_NUMBERS),
-        checkin: getRandomElement(PLACES_CHECKIN),
-        checkout: getRandomElement(PLACES_CHECKOUT),
-        features: pruningArray(PLACE_FEATURES),
+        checkin: getRandomElement(PLACE_CHECKINS),
+        checkout: getRandomElement(PLACE_CHECKOUTS),
+        features: sliceArray(PLACE_FEATURES),
         description: '',
-        photos: pruningArray(PLACE_PHOTOS)
+        photos: sliceArray(PLACE_PHOTOS)
       },
       location: {
         x: coordinateX,
@@ -82,8 +83,7 @@ var getPin = function (element) {
   var pin = document.querySelector('#pin').content.querySelector('.map__pin');
   var ad = pin.cloneNode(true);
 
-  // Наверное я просто не так поняла, но оно не работает.. ↓
-  ad.style = 'left: ' + (element.location.x - 25) + ' px; top: ' + (element.location.y - 70) + ' px;';
+  ad.style = 'left: ' + (element.location.x - 25) + 'px; top: ' + (element.location.y - 70) + 'px;';
   ad.querySelector('img').src = element.author.avatar;
   ad.querySelector('img').alt = element.offer.title;
 
