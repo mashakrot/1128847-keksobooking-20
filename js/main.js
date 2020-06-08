@@ -31,18 +31,17 @@ var getRandomNumberInInterval = function (min, max) {
 };
 
 var shuffleArray = function (elements) {
-  var array = elements.slice(0);
+  var clonedElements = elements.slice();
   for (var i = elements.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
-    var l = array[i];
-    array[i] = array[j];
-    array[j] = l;
+    var l = clonedElements[i];
+    clonedElements[i] = clonedElements[j];
+    clonedElements[j] = l;
   }
-  return array;
+  return clonedElements;
 };
 
 var sliceArray = function (elements) {
-  shuffleArray(elements);
   elements.slice(getRandomIndex(elements));
   return elements;
 };
@@ -65,9 +64,9 @@ var generateSimilarAd = function (quantity) {
         guests: getRandomElement(GUESTS_NUMBERS),
         checkin: getRandomElement(PLACE_CHECKINS),
         checkout: getRandomElement(PLACE_CHECKOUTS),
-        features: sliceArray(PLACE_FEATURES),
+        features: sliceArray(shuffleArray(PLACE_FEATURES)),
         description: '',
-        photos: sliceArray(PLACE_PHOTOS)
+        photos: sliceArray(shuffleArray(PLACE_PHOTOS))
       },
       location: {
         x: coordinateX,
