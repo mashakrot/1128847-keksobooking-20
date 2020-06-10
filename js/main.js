@@ -42,8 +42,7 @@ var shuffleArray = function (elements) {
 };
 
 var sliceArray = function (elements) {
-  elements.slice(getRandomIndex(elements));
-  return elements;
+  return elements.slice(getRandomIndex(elements));
 };
 
 var generateSimilarAd = function (quantity) {
@@ -101,43 +100,30 @@ var renderPins = function (elements) {
 };
 
 var persuadeWordRoom = function (element) {
-  var word = '';
-  if (element.offer.rooms === 1) {
-    word = 'комната';
-  } else if (element.offer.rooms === 2 || element.offer.rooms === 3) {
-    word = 'комнаты';
+  if (element.offer.rooms === 1 || element.offer.rooms === 21) {
+    // вряд ли у кого-то 20 комнат есть и я не придумала другого способа
+    element.offer.rooms = 'комната';
+  } else if (element.offer.rooms === 2 || element.offer.rooms === 3 || element.offer.rooms === 4) {
+    element.offer.rooms = 'комнаты';
+  } else {
+    element.offer.rooms = 'комнат';
   }
-  return word;
+  return element.offer.rooms;
 };
 
 var persuadeWordGuest = function (element) {
-  var word = '';
   if (element.offer.guests === 1) {
-    word = 'гостя';
+    element.offer.guests = 'гостя';
   } else if (element.offer.guests === 2 || element.offer.guests === 3) {
-    word = 'гостей';
+    element.offer.guests = 'гостей';
   }
-  return word;
+  return element.offer.guests;
 };
 
-var renderCard = function (element) {
-  var card = document.querySelector('#card').content.querySelector('.popup');
-  var adCard = card.cloneNode(true);
-
-  var map = document.querySelector('.map');
-  var mapFiltersContainer = map.querySelector('.map__filters-container');
-  var fragment = document.createDocumentFragment();
-
-  var typesMap = {
-    'flat': 'Квартира',
-    'bungalo': 'Бунгало',
-    'house': 'Дом',
-    'palace': 'Дворец'
-  };
-
-  var renderPopupPhotos = function () {
-    var popupPhotos = adCard.querySelector('.popup__photos');
-    popupPhotos.innerHTML = '';
+var renderPopupPhotos = function (adCard, element) {
+  var popupPhotos = adCard.querySelector('.popup__photos');
+  popupPhotos.innerHTML = '';
+  if (element.offer.photos.length > 0) {
     element.offer.photos.forEach(function (photo) {
       var popupPhoto = document.createElement('img');
       popupPhoto.classList.add('popup__photo');
@@ -147,19 +133,36 @@ var renderCard = function (element) {
       popupPhoto.alt = 'Фотография жилья';
       fragment.appendChild(popupPhoto);
     });
-    popupPhotos.appendChild(fragment);
-  };
+  } else {
+    popupPhotos.classList.add('hidden');
+  }
+  popupPhotos.appendChild(fragment);
+};
 
-  var renderPopupFeatures = function () {
-    var popupFeatures = adCard.querySelector('.popup__features');
-    popupFeatures.innerHTML = '';
+var renderPopupFeatures = function (adCard, element) {
+  var popupFeatures = adCard.querySelector('.popup__features');
+  popupFeatures.innerHTML = '';
+  if (element.offer.features.length > 0) {
     element.offer.features.forEach(function (feature) {
       var newFeature = document.createElement('li');
       newFeature.classList.add('popup__feature');
       newFeature.classList.add('popup__feature--' + feature);
       fragment.appendChild(newFeature);
     });
-    popupFeatures.appendChild(fragment);
+  } else {
+    popupFeatures.classList.add('hidden');
+  }
+  popupFeatures.appendChild(fragment);
+};
+
+var renderCard = function (element) {
+  var card = document.querySelector('#card').content.querySelector('.popup');
+  var adCard = card.cloneNode(true);
+  var typesMap = {
+    'flat': 'Квартира',
+    'bungalo': 'Бунгало',
+    'house': 'Дом',
+    'palace': 'Дворец'
   };
 
   adCard.querySelector('.popup__title').textContent = element.offer.title;
@@ -171,15 +174,18 @@ var renderCard = function (element) {
   adCard.querySelector('.popup__description').textContent = element.offer.description;
   adCard.querySelector('.popup__avatar').src = element.author.avatar;
 
-  renderPopupFeatures();
-  renderPopupPhotos();
+  renderPopupFeatures(adCard, element);
+  renderPopupPhotos(adCard, element);
 
-  fragment.appendChild(adCard);
-  map.insertBefore(fragment, mapFiltersContainer);
+  mapFiltersContainer.insertAdjacentElement('beforebegin', adCard);
 };
 
 switchToActiveState();
 var similarAds = generateSimilarAd(NUMBER_OF_ADS);
 renderPins(similarAds);
 
-renderCard(similarAds[1]);
+var map = document.querySelector('.map');
+var mapFiltersContainer = map.querySelector('.map__filters-container');
+var fragment = document.createDocumentFragment();
+// Замечание насчет фрагмента я поняла так, не уверена правильно ли
+renderCard(similarAds[0]);
