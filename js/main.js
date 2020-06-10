@@ -99,29 +99,35 @@ var renderPins = function (elements) {
   mapPins.appendChild(fragment);
 };
 
-var persuadeWordRoom = function (element) {
-  if (element.offer.rooms === 1 || element.offer.rooms === 21) {
-    // вряд ли у кого-то 20 комнат есть и я не придумала другого способа
-    element.offer.rooms = 'комната';
-  } else if (element.offer.rooms === 2 || element.offer.rooms === 3 || element.offer.rooms === 4) {
-    element.offer.rooms = 'комнаты';
-  } else {
-    element.offer.rooms = 'комнат';
+var flexNormalize = function (number, forms) {
+  number = Number(number);
+  if (number % 10 > 100 && number % 100 < 15) {
+    return forms[0];
   }
-  return element.offer.rooms;
+  var remainder = number % 10;
+  switch (true) {
+    case remainder === 0 || remainder > 4:
+      return forms[0];
+    case remainder === 1:
+      return forms[1];
+    default:
+      return forms[2];
+  }
 };
 
-var persuadeWordGuest = function (element) {
-  if (element.offer.guests === 1) {
-    element.offer.guests = 'гостя';
-  } else if (element.offer.guests === 2 || element.offer.guests === 3) {
-    element.offer.guests = 'гостей';
-  }
-  return element.offer.guests;
+var roomsFlexNormalize = function (number) {
+  var forms = ['комнат', 'комната', 'комнаты'];
+  return flexNormalize(number, forms);
+};
+
+var guestsFlexNormalize = function (number) {
+  var forms = ['гостей', 'гостя', 'гостей'];
+  return flexNormalize(number, forms);
 };
 
 var renderPopupPhotos = function (adCard, element) {
   var popupPhotos = adCard.querySelector('.popup__photos');
+  var fragment = document.createDocumentFragment();
   popupPhotos.innerHTML = '';
   if (element.offer.photos.length > 0) {
     element.offer.photos.forEach(function (photo) {
@@ -141,6 +147,7 @@ var renderPopupPhotos = function (adCard, element) {
 
 var renderPopupFeatures = function (adCard, element) {
   var popupFeatures = adCard.querySelector('.popup__features');
+  var fragment = document.createDocumentFragment();
   popupFeatures.innerHTML = '';
   if (element.offer.features.length > 0) {
     element.offer.features.forEach(function (feature) {
@@ -169,7 +176,7 @@ var renderCard = function (element) {
   adCard.querySelector('.popup__text--address').textContent = element.offer.address;
   adCard.querySelector('.popup__text--price').textContent = element.offer.price + 'P/ночь';
   adCard.querySelector('.popup__type').textContent = typesMap[element.offer.type];
-  adCard.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' ' + persuadeWordRoom(element) + ' для ' + element.offer.guests + ' ' + persuadeWordGuest(element) + '.';
+  adCard.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' ' + roomsFlexNormalize(element.offer.rooms) + ' для ' + element.offer.guests + ' ' + guestsFlexNormalize(element.offer.guests) + '.';
   adCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' выезд до ' + element.offer.checkout + '.';
   adCard.querySelector('.popup__description').textContent = element.offer.description;
   adCard.querySelector('.popup__avatar').src = element.author.avatar;
@@ -186,6 +193,4 @@ renderPins(similarAds);
 
 var map = document.querySelector('.map');
 var mapFiltersContainer = map.querySelector('.map__filters-container');
-var fragment = document.createDocumentFragment();
-// Замечание насчет фрагмента я поняла так, не уверена правильно ли
 renderCard(similarAds[0]);
