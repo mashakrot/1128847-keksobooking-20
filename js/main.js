@@ -13,7 +13,7 @@ var LOCATION_X_MAX = 1200;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var PIN_WIDTH = 65;
-var PIN_HEIGHT = 87;
+var PIN_HEIGHT = 84;
 
 var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -27,7 +27,15 @@ var mapFilters = document.querySelector('.map__filters');
 var mapFiltersSelects = mapFilters.querySelectorAll('select');
 var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
 
-var inactiveState = function () {
+var switchToInactiveState = function () {
+  var mapPinsList = document.querySelectorAll('.map__pin[type="button"]');
+  mapPinsList.forEach(function (pin) {
+    pin.remove();
+  });
+
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+
   fillAddressFieldInactiveState();
   adFormParts.forEach(function (part) {
     part.disabled = true;
@@ -58,16 +66,18 @@ var switchToActiveState = function () {
   renderPins(similarAds);
 };
 
-var onMapPinClick = function (evt) {
+var onMapPinLeftClick = function (evt) {
   if (evt.which === 1) {
     switchToActiveState();
   }
+  mapPinMain.removeEventListener('mousedown', onMapPinLeftClick);
 };
 
 var onMapPinEnterPress = function (evt) {
   if (evt.key === 'Enter') {
     switchToActiveState();
   }
+  mapPinMain.removeEventListener('keydown', onMapPinEnterPress);
 };
 
 var getRandomIndex = function (elements) {
@@ -242,46 +252,46 @@ var checkGuestsAndRooms = function () {
   var roomNumber = document.querySelector('#room_number');
   var placeCapacity = document.querySelector('#capacity');
 
-  if (roomNumber.value === 1 && placeCapacity.value !== 1) {
-    placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
-  } else if (roomNumber.value === 2 && (placeCapacity.value !== 3 || placeCapacity.value !== 0)) {
-    placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
-  } else if (roomNumber.value === 3 && placeCapacity.value === 0) {
-    placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
-  } else if (roomNumber.value === 100 && placeCapacity.value !== 0) {
-    placeCapacity.setCustomValidity('Если комнат 100 - помещение не для гостей');
-  }
-  // Я уверена что тут все не так, но ничего другого не придумалось. Оно ↑ не работает
+  adForm.addEventListener('change', function () {
+    if (roomNumber.value === 1 && placeCapacity.value !== 1) {
+      placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
+    } else if (roomNumber.value === 2 && (placeCapacity.value !== 3 || placeCapacity.value !== 0)) {
+      placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
+    } else if (roomNumber.value === 3 && placeCapacity.value === 0) {
+      placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
+    } else if (roomNumber.value === 100 && placeCapacity.value !== 0) {
+      placeCapacity.setCustomValidity('Если комнат 100 - помещение не для гостей');
+    }
+  });
 };
 
 var fillAddressFieldInactiveState = function () {
-  var left = mapPinMain.style.left.slice(0, mapPinMain.style.left.length - 2);
-  var top = mapPinMain.style.top.slice(0, mapPinMain.style.top.length - 2);
-  var pinLeft = Math.floor(left / 1 + PIN_WIDTH / 2);
-  var pinTop = Math.floor(top / 2 + PIN_WIDTH / 2);
+  var left = parseInt(mapPinMain.style.left, 10);
+  var top = parseInt(mapPinMain.style.top, 10);
+  var pinLeft = Math.floor(left + PIN_WIDTH / 2);
+  var pinTop = Math.floor(top + PIN_WIDTH / 2);
 
   addressInput.value = pinLeft + ', ' + pinTop;
 };
 
 var fillAddressFieldActiveState = function () {
-  var left = mapPinMain.style.left.slice(0, mapPinMain.style.left.length - 2);
-  var top = mapPinMain.style.top.slice(0, mapPinMain.style.top.length - 2);
-  var pinLeft = Math.floor(left / 1 + PIN_WIDTH / 2);
-  var pinTop = Math.floor(top / 1 + PIN_HEIGHT);
+  var left = parseInt(mapPinMain.style.left, 10);
+  var top = parseInt(mapPinMain.style.top, 10);
+  var pinLeft = Math.floor(left + PIN_WIDTH / 2);
+  var pinTop = Math.floor(top + PIN_HEIGHT);
 
   addressInput.value = pinLeft + ', ' + pinTop;
 };
 
 
-inactiveState();
+switchToInactiveState();
 
 var similarAds = generateSimilarAd(NUMBER_OF_ADS);
 
-mapPinMain.addEventListener('mousedown', onMapPinClick);
+mapPinMain.addEventListener('mousedown', onMapPinLeftClick);
 mapPinMain.addEventListener('keydown', onMapPinEnterPress);
 
 checkGuestsAndRooms();
 
 var mapFiltersContainer = map.querySelector('.map__filters-container');
 renderCard(/* similarAds[0] */);
-
