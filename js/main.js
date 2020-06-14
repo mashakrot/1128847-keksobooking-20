@@ -27,8 +27,9 @@ var mapFilters = document.querySelector('.map__filters');
 var mapFiltersSelects = mapFilters.querySelectorAll('select');
 var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
 
+
 var switchToInactiveState = function () {
-  var mapPinsList = document.querySelectorAll('.map__pin[type="button"]');
+  var mapPinsList = document.querySelectorAll('.map__pin:not(.map__pin--main)');
   mapPinsList.forEach(function (pin) {
     pin.remove();
   });
@@ -64,13 +65,16 @@ var switchToActiveState = function () {
   });
 
   renderPins(similarAds);
+  mapPinMain.addEventListener('mousedown', onMapPinWhichButtonPressed);
+  mapPinMain.addEventListener('keydown', onMapPinEnterPress);
 };
 
-var onMapPinLeftClick = function (evt) {
+var onMapPinWhichButtonPressed = function (evt) {
+  // Длинно но по другому не придумывается
   if (evt.which === 1) {
     switchToActiveState();
   }
-  mapPinMain.removeEventListener('mousedown', onMapPinLeftClick);
+  mapPinMain.removeEventListener('mousedown', onMapPinWhichButtonPressed);
 };
 
 var onMapPinEnterPress = function (evt) {
@@ -251,18 +255,19 @@ var renderCard = function (element) {
 var checkGuestsAndRooms = function () {
   var roomNumber = document.querySelector('#room_number');
   var placeCapacity = document.querySelector('#capacity');
+  if (roomNumber.value === '1' && placeCapacity.value !== '1') {
+    placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
+  } else if (roomNumber.value === '2' && (placeCapacity.value !== '3' || placeCapacity.value !== '0')) {
+    placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
+  } else if (roomNumber.value === '3' && placeCapacity.value === '0') {
+    placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
+  } else if (roomNumber.value === '100' && placeCapacity.value !== '0') {
+    placeCapacity.setCustomValidity('Если комнат 100 - помещение не для гостей');
+  }
+};
 
-  adForm.addEventListener('change', function () {
-    if (roomNumber.value === 1 && placeCapacity.value !== 1) {
-      placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
-    } else if (roomNumber.value === 2 && (placeCapacity.value !== 3 || placeCapacity.value !== 0)) {
-      placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
-    } else if (roomNumber.value === 3 && placeCapacity.value === 0) {
-      placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
-    } else if (roomNumber.value === 100 && placeCapacity.value !== 0) {
-      placeCapacity.setCustomValidity('Если комнат 100 - помещение не для гостей');
-    }
-  });
+var attachHandler = function () {
+  adForm.addEventListener('change', checkGuestsAndRooms);
 };
 
 var fillAddressFieldInactiveState = function () {
@@ -283,15 +288,16 @@ var fillAddressFieldActiveState = function () {
   addressInput.value = pinLeft + ', ' + pinTop;
 };
 
-
+// switchToActiveState();
 switchToInactiveState();
 
 var similarAds = generateSimilarAd(NUMBER_OF_ADS);
 
-mapPinMain.addEventListener('mousedown', onMapPinLeftClick);
+mapPinMain.addEventListener('mousedown', onMapPinWhichButtonPressed);
 mapPinMain.addEventListener('keydown', onMapPinEnterPress);
+// ААА! Я слишком туплю. Я не понимаю куда это ↑ надо засунуть чтоб оно работало поэтому я оставила так :(
 
-checkGuestsAndRooms();
+attachHandler();
 
 var mapFiltersContainer = map.querySelector('.map__filters-container');
 renderCard(/* similarAds[0] */);
