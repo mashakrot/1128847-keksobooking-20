@@ -47,6 +47,9 @@ var switchToInactiveState = function () {
   mapFiltersFieldsets.forEach(function (part) {
     part.disabled = true;
   });
+
+  mapPinMain.addEventListener('mousedown', onMapPinMouseDown);
+  mapPinMain.addEventListener('keydown', onMapPinEnterPress);
 };
 
 var switchToActiveState = function () {
@@ -65,23 +68,21 @@ var switchToActiveState = function () {
   });
 
   renderPins(similarAds);
-  mapPinMain.addEventListener('mousedown', onMapPinWhichButtonPressed);
-  mapPinMain.addEventListener('keydown', onMapPinEnterPress);
+
+  mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);
+  mapPinMain.removeEventListener('keydown', onMapPinEnterPress);
 };
 
-var onMapPinWhichButtonPressed = function (evt) {
-  // Длинно но по другому не придумывается
-  if (evt.which === 1) {
+var onMapPinMouseDown = function (evt) {
+  if (evt.button === 0) {
     switchToActiveState();
   }
-  mapPinMain.removeEventListener('mousedown', onMapPinWhichButtonPressed);
 };
 
 var onMapPinEnterPress = function (evt) {
   if (evt.key === 'Enter') {
     switchToActiveState();
   }
-  mapPinMain.removeEventListener('keydown', onMapPinEnterPress);
 };
 
 var getRandomIndex = function (elements) {
@@ -252,12 +253,12 @@ var renderCard = function (element) {
   mapFiltersContainer.insertAdjacentElement('beforebegin', adCard);
 };
 
-var checkGuestsAndRooms = function () {
+var onFormElementChange = function () {
   var roomNumber = document.querySelector('#room_number');
   var placeCapacity = document.querySelector('#capacity');
   if (roomNumber.value === '1' && placeCapacity.value !== '1') {
     placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
-  } else if (roomNumber.value === '2' && (placeCapacity.value !== '3' || placeCapacity.value !== '0')) {
+  } else if (roomNumber.value === '2' && (placeCapacity.value === '3' || placeCapacity.value === '0')) {
     placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
   } else if (roomNumber.value === '3' && placeCapacity.value === '0') {
     placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
@@ -267,7 +268,7 @@ var checkGuestsAndRooms = function () {
 };
 
 var attachHandler = function () {
-  adForm.addEventListener('change', checkGuestsAndRooms);
+  adForm.addEventListener('change', onFormElementChange);
 };
 
 var fillAddressFieldInactiveState = function () {
@@ -288,14 +289,9 @@ var fillAddressFieldActiveState = function () {
   addressInput.value = pinLeft + ', ' + pinTop;
 };
 
-// switchToActiveState();
 switchToInactiveState();
 
 var similarAds = generateSimilarAd(NUMBER_OF_ADS);
-
-mapPinMain.addEventListener('mousedown', onMapPinWhichButtonPressed);
-mapPinMain.addEventListener('keydown', onMapPinEnterPress);
-// ААА! Я слишком туплю. Я не понимаю куда это ↑ надо засунуть чтоб оно работало поэтому я оставила так :(
 
 attachHandler();
 
