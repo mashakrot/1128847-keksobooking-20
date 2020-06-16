@@ -12,10 +12,77 @@ var LOCATION_X_MIN = 0;
 var LOCATION_X_MAX = 1200;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
+var PIN_WIDTH = 65;
+var PIN_HEIGHT = 84;
+
+var map = document.querySelector('.map');
+var mapPinMain = document.querySelector('.map__pin--main');
+var mapPins = document.querySelector('.map__pins');
+var adForm = document.querySelector('.ad-form');
+var adFormParts = adForm.querySelectorAll('fieldset');
+var addressInput = document.querySelector('#address');
+
+
+var mapFilters = document.querySelector('.map__filters');
+var mapFiltersSelects = mapFilters.querySelectorAll('select');
+var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
+
+
+var switchToInactiveState = function () {
+  var mapPinsList = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  mapPinsList.forEach(function (pin) {
+    pin.remove();
+  });
+
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+
+  fillAddressFieldInactiveState();
+  adFormParts.forEach(function (part) {
+    part.disabled = true;
+  });
+  mapFiltersSelects.forEach(function (part) {
+    part.disabled = true;
+  });
+  mapFiltersFieldsets.forEach(function (part) {
+    part.disabled = true;
+  });
+
+  mapPinMain.addEventListener('mousedown', onMapPinMouseDown);
+  mapPinMain.addEventListener('keydown', onMapPinEnterPress);
+};
 
 var switchToActiveState = function () {
-  var map = document.querySelector('.map');
   map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+
+  fillAddressFieldActiveState();
+  adFormParts.forEach(function (part) {
+    part.disabled = false;
+  });
+  mapFiltersSelects.forEach(function (part) {
+    part.disabled = false;
+  });
+  mapFiltersFieldsets.forEach(function (part) {
+    part.disabled = false;
+  });
+
+  renderPins(similarAds);
+
+  mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);
+  mapPinMain.removeEventListener('keydown', onMapPinEnterPress);
+};
+
+var onMapPinMouseDown = function (evt) {
+  if (evt.button === 0) {
+    switchToActiveState();
+  }
+};
+
+var onMapPinEnterPress = function (evt) {
+  if (evt.key === 'Enter') {
+    switchToActiveState();
+  }
 };
 
 var getRandomIndex = function (elements) {
@@ -89,7 +156,6 @@ var getPin = function (element) {
 };
 
 var renderPins = function (elements) {
-  var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
 
   elements.forEach(function (element) {
@@ -187,10 +253,47 @@ var renderCard = function (element) {
   mapFiltersContainer.insertAdjacentElement('beforebegin', adCard);
 };
 
-switchToActiveState();
-var similarAds = generateSimilarAd(NUMBER_OF_ADS);
-renderPins(similarAds);
+var onFormElementChange = function () {
+  var roomNumber = document.querySelector('#room_number');
+  var placeCapacity = document.querySelector('#capacity');
+  if (roomNumber.value === '1' && placeCapacity.value !== '1') {
+    placeCapacity.setCustomValidity('Если комната одна, то гостей может быть не больше одного');
+  } else if (roomNumber.value === '2' && (placeCapacity.value === '3' || placeCapacity.value === '0')) {
+    placeCapacity.setCustomValidity('Если комнат две, то может быть 1-2 гостя');
+  } else if (roomNumber.value === '3' && placeCapacity.value === '0') {
+    placeCapacity.setCustomValidity('Если комнат три, то может быть 1-3 гостей');
+  } else if (roomNumber.value === '100' && placeCapacity.value !== '0') {
+    placeCapacity.setCustomValidity('Если комнат 100 - помещение не для гостей');
+  }
+};
 
-var map = document.querySelector('.map');
+var attachHandler = function () {
+  adForm.addEventListener('change', onFormElementChange);
+};
+
+var fillAddressFieldInactiveState = function () {
+  var left = parseInt(mapPinMain.style.left, 10);
+  var top = parseInt(mapPinMain.style.top, 10);
+  var pinLeft = Math.floor(left + PIN_WIDTH / 2);
+  var pinTop = Math.floor(top + PIN_WIDTH / 2);
+
+  addressInput.value = pinLeft + ', ' + pinTop;
+};
+
+var fillAddressFieldActiveState = function () {
+  var left = parseInt(mapPinMain.style.left, 10);
+  var top = parseInt(mapPinMain.style.top, 10);
+  var pinLeft = Math.floor(left + PIN_WIDTH / 2);
+  var pinTop = Math.floor(top + PIN_HEIGHT);
+
+  addressInput.value = pinLeft + ', ' + pinTop;
+};
+
+switchToInactiveState();
+
+var similarAds = generateSimilarAd(NUMBER_OF_ADS);
+
+attachHandler();
+
 var mapFiltersContainer = map.querySelector('.map__filters-container');
-renderCard(similarAds[0]);
+renderCard(/* similarAds[0] */);
