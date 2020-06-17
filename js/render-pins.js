@@ -12,7 +12,7 @@
     return ad;
   };
 
-  window.renderPins = function (elements) {
+  var renderPins = function (elements) {
     var mapPins = document.querySelector('.map__pins');
     var fragment = document.createDocumentFragment();
 
@@ -22,4 +22,6 @@
 
     mapPins.appendChild(fragment);
   };
+
+  window.renderPins = renderPins;
 })();
