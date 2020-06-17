@@ -4,7 +4,7 @@
   var PIN_WIDTH = window.constants.PIN_WIDTH;
   var PIN_HEIGHT = window.constants.PIN_HEIGHT;
   var addressInput = document.querySelector('#address');
-  var mapPinMain = window.inactiveState.mapPinMain;
+  var mapPinMain = document.querySelector('.map__pin--main');
 
   var fillAddressFieldInactiveState = function () {
     var left = parseInt(mapPinMain.style.left, 10);
