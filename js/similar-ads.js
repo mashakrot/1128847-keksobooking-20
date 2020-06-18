@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var getRandomNumberInInterval = window.math.getRandomNumberInInterval;
-  var getRandomElement = window.math.getRandomElement;
-  var sliceArray = window.math.sliceArray;
-  var shuffleArray = window.math.shuffleArray;
+  var getRandomNumberInInterval = window.math.randomNumberInInterval;
+  var getRandomElement = window.math.randomElement;
+  var sliceArray = window.math.slice;
+  var shuffleArray = window.math.shuffle;
 
-  var generateSimilarAd = function (quantity) {
+  var generateSimilarAds = function (quantity) {
     var similarAds = [];
     for (var i = 1; i <= quantity; i++) {
       var coordinateX = getRandomNumberInInterval(window.constants.LOCATION_X_MIN, window.constants.LOCATION_X_MAX);
@@ -38,5 +38,5 @@
     return similarAds;
   };
 
-  window.similarAds = generateSimilarAd(window.constants.NUMBER_OF_ADS);
+  window.generateSimilarAds = generateSimilarAds;
 })();

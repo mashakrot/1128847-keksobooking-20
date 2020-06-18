@@ -9,18 +9,8 @@
   var mapFiltersSelects = mapFilters.querySelectorAll('select');
   var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
   var fillInactiveState = window.address.fillInactiveState;
-  var onMapPinMouseDown = window.callback.onMapPinMouseDown;
-  var onMapPinEnterPress = window.callback.onMapPinEnterPress;
-
-  window.inactiveState = {
-    map: map,
-    adForm: adForm,
-    mapPinMain: mapPinMain,
-    mapFilters: mapFilters,
-    adFormParts: adFormParts,
-    mapFiltersSelects: mapFiltersSelects,
-    mapFiltersFieldsets: mapFiltersFieldsets
-  };
+  var onMapPinMouseDown = window.callback.mouseDown;
+  var onMapPinEnterPress = window.callback.enterPress;
 
   var switchToInactiveSate = function () {
     var mapPinsList = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -46,4 +36,15 @@
   };
 
   switchToInactiveSate();
+
+  window.inactiveState = {
+    map: map,
+    adForm: adForm,
+    mapPinMain: mapPinMain,
+    mapFilters: mapFilters,
+    adFormParts: adFormParts,
+    mapFiltersSelects: mapFiltersSelects,
+    mapFiltersFieldsets: mapFiltersFieldsets
+  };
+  // Здесь я не придумала как назвать по другому map он и так и так map
 })();

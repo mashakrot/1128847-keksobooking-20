@@ -29,10 +29,10 @@
   };
 
   window.math = {
-    getRandomIndex: getRandomIndex,
-    getRandomElement: getRandomElement,
-    getRandomNumberInInterval: getRandomNumberInInterval,
-    shuffleArray: shuffleArray,
-    sliceArray: sliceArray
+    randomIndex: getRandomIndex,
+    randomElement: getRandomElement,
+    randomNumberInInterval: getRandomNumberInInterval,
+    shuffle: shuffleArray,
+    slice: sliceArray
   };
 })();
