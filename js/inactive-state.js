@@ -46,5 +46,4 @@
     mapFiltersSelects: mapFiltersSelects,
     mapFiltersFieldsets: mapFiltersFieldsets
   };
-  // Здесь я не придумала как назвать по другому map он и так и так map
 })();

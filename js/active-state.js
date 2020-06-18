@@ -35,6 +35,6 @@
   };
 
   window.activeState = {
-    activeState: switchToActiveState
+    switch: switchToActiveState
   };
 })();
