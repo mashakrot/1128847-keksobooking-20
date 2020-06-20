@@ -2,6 +2,7 @@
 
 (function () {
   var map = window.inactiveState.map;
+  var mapFiltersContainer = map.querySelector('.map__filters-container');
 
   var flexNormalize = function (number, forms) {
     number = Number(number);
@@ -67,7 +68,6 @@
   };
 
   var renderCard = function (element) {
-    var mapFiltersContainer = map.querySelector('.map__filters-container');
     var card = document.querySelector('#card').content.querySelector('.popup');
     var adCard = card.cloneNode(true);
     var typesMap = {
@@ -90,7 +90,29 @@
     renderPopupPhotos(adCard, element);
 
     mapFiltersContainer.insertAdjacentElement('beforebegin', adCard);
+    return adCard;
   };
 
-  renderCard(/* window.similarAds[0] */);
+  var successHandler = function (ads) {
+    // for (var i = 0; i < ads[0]; i++) {
+    mapFiltersContainer.insertAdjacentElement('beforebegin', renderCard(ads[0]));
+    // }
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: orangeRed; color: white; height: 30px;';
+    node.style.position = 'fixed';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '25px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+
+  window.card = {
+    errorHandler: errorHandler,
+    successHandler: successHandler
+  };
 })();

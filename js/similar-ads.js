@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  // То есть теперь этот файл надо удалить?
+
   var getRandomNumberInInterval = window.math.randomNumberInInterval;
   var getRandomElement = window.math.randomElement;
   var sliceArray = window.math.slice;

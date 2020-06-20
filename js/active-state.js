@@ -12,6 +12,11 @@
   var onMapPinEnterPress = window.callback.enterPress;
   var renderPins = window.renderPins;
 
+  var load = window.backend.load;
+  var URL = window.constants.URL;
+  var errorHandler = window.card.errorHandler;
+  var successHandler = window.card.successHandler;
+
   var switchToActiveState = function () {
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
@@ -27,8 +32,9 @@
       part.disabled = false;
     });
 
-    var similarAds = window.generateSimilarAds(window.constants.NUMBER_OF_ADS);
-    renderPins(similarAds);
+    load(URL, renderPins, errorHandler);
+    load(URL, successHandler, errorHandler);
+
 
     mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);
     mapPinMain.removeEventListener('keydown', onMapPinEnterPress);

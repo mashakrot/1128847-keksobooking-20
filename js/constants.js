@@ -15,6 +15,8 @@
     LOCATION_Y_MIN: 130,
     LOCATION_Y_MAX: 630,
     PIN_WIDTH: 65,
-    PIN_HEIGHT: 84
+    PIN_HEIGHT: 84,
+    TIMEOUT_IN_MS: 10000,
+    URL: 'https://javascript.pages.academy/keksobooking/data'
   };
 })();

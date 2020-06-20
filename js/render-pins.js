@@ -16,9 +16,9 @@
     var mapPins = document.querySelector('.map__pins');
     var fragment = document.createDocumentFragment();
 
-    elements.forEach(function (element) {
-      fragment.appendChild(getPin(element));
-    });
+    for (var i = 0; i < elements.length; i++) {
+      fragment.appendChild(getPin(elements[i]));
+    }
 
     mapPins.appendChild(fragment);
   };
