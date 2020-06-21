@@ -2,7 +2,7 @@
 
 (function () {
   var renderPins = window.renderPins;
-  console.log(renderPins);
+
   var onMapPinMouseDown = function (evt) {
     if (evt.button === 0) {
       window.activeState.switch();
