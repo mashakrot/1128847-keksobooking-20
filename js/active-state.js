@@ -10,12 +10,10 @@
   var fillActiveState = window.address.fillActiveState;
   var onMapPinMouseDown = window.callback.mouseDown;
   var onMapPinEnterPress = window.callback.enterPress;
-  var renderPins = window.renderPins;
 
   var load = window.backend.load;
-  var URL = window.constants.URL;
-  var errorHandler = window.card.errorHandler;
-  var successHandler = window.card.successHandler;
+  var errorHandler = window.renderPins.errorHandler;
+  var successHandler = window.renderPins.successHandler;
 
   var switchToActiveState = function () {
     map.classList.remove('map--faded');
@@ -32,8 +30,7 @@
       part.disabled = false;
     });
 
-    load(URL, renderPins, errorHandler);
-    load(URL, successHandler, errorHandler);
+    load(successHandler, errorHandler);
 
 
     mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);

@@ -2,8 +2,9 @@
 
 (function () {
   var TIMEOUT_IN_MS = window.constants.TIMEOUT_IN_MS;
+  var URL = window.constants.URL;
 
-  var load = function (url, onLoad, onError) {
+  var load = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -25,7 +26,7 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', url);
+    xhr.open('GET', URL);
     xhr.send();
 
   };
