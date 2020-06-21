@@ -12,8 +12,8 @@
   var onMapPinEnterPress = window.callback.enterPress;
 
   var load = window.backend.load;
-  var errorHandler = window.renderPins.errorHandler;
-  var successHandler = window.renderPins.successHandler;
+  var errorHandler = window.callback.errorHandler;
+  var successHandler = window.callback.successHandler;
 
   var switchToActiveState = function () {
     map.classList.remove('map--faded');
