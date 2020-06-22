@@ -10,7 +10,10 @@
   var fillActiveState = window.address.fillActiveState;
   var onMapPinMouseDown = window.callback.mouseDown;
   var onMapPinEnterPress = window.callback.enterPress;
-  var renderPins = window.renderPins;
+
+  var load = window.backend.load;
+  var errorHandler = window.callback.errorHandler;
+  var successHandler = window.callback.successHandler;
 
   var switchToActiveState = function () {
     map.classList.remove('map--faded');
@@ -27,8 +30,8 @@
       part.disabled = false;
     });
 
-    var similarAds = window.generateSimilarAds(window.constants.NUMBER_OF_ADS);
-    renderPins(similarAds);
+    load(successHandler, errorHandler);
+
 
     mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);
     mapPinMain.removeEventListener('keydown', onMapPinEnterPress);

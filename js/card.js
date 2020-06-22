@@ -2,6 +2,7 @@
 
 (function () {
   var map = window.inactiveState.map;
+  var mapFiltersContainer = map.querySelector('.map__filters-container');
 
   var flexNormalize = function (number, forms) {
     number = Number(number);
@@ -67,7 +68,6 @@
   };
 
   var renderCard = function (element) {
-    var mapFiltersContainer = map.querySelector('.map__filters-container');
     var card = document.querySelector('#card').content.querySelector('.popup');
     var adCard = card.cloneNode(true);
     var typesMap = {
@@ -90,7 +90,9 @@
     renderPopupPhotos(adCard, element);
 
     mapFiltersContainer.insertAdjacentElement('beforebegin', adCard);
+    return adCard;
   };
 
-  renderCard(/* window.similarAds[0] */);
+  renderCard(/*  */);
+
 })();
