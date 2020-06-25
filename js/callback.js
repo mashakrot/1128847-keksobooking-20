@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var renderPins = window.renderPins;
+  var updatePins = window.updatePins;
 
   var onMapPinMouseDown = function (evt) {
     if (evt.button === 0) {
@@ -16,7 +16,7 @@
   };
 
   var successHandler = function (elements) {
-    renderPins(elements);
+    updatePins(elements);
   };
 
   var errorHandler = function (errorMessage) {
