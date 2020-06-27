@@ -16,13 +16,11 @@
     var mapPins = document.querySelector('.map__pins');
     var mapPinsList = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
     var fragment = document.createDocumentFragment();
-    var MAX_SIMILAR_ADS_COUNT = window.constants.MAX_SIMILAR_ADS_COUNT;
-    var takeNumber = elements.length > MAX_SIMILAR_ADS_COUNT ? MAX_SIMILAR_ADS_COUNT : elements.length;
 
     mapPinsList.forEach(function (element) {
       element.remove();
     });
-    for (var i = 0; i < takeNumber; i++) {
+    for (var i = 0; i < elements.slice(0, 5).length; i++) {
       fragment.appendChild(getPin(elements[i]));
     }
 
@@ -37,13 +35,12 @@
     mapFilters.addEventListener('change', function () {
       renderPins(elements.slice().filter(function (it) {
         if (housingType.value === 'any') {
-          var get = true;
+          return true;
         } else if (it.offer.type === housingType.value) {
-          get = true;
+          return true;
         } else {
-          get = false;
+          return false;
         }
-        return get;
       }));
     });
   };
