@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_SIMILAR_ADS_COUNT = window.constants.MAX_SIMILAR_ADS_COUNT;
+
   var getPin = function (element) {
     var pin = document.querySelector('#pin').content.querySelector('.map__pin');
     var ad = pin.cloneNode(true);
@@ -14,14 +16,34 @@
 
   var renderPins = function (elements) {
     var mapPins = document.querySelector('.map__pins');
+    var mapPinsList = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
     var fragment = document.createDocumentFragment();
 
-    elements.forEach(function (element) {
+    mapPinsList.forEach(function (element) {
+      element.remove();
+    });
+
+    elements.slice(0, MAX_SIMILAR_ADS_COUNT).forEach(function (element) {
       fragment.appendChild(getPin(element));
     });
 
     mapPins.appendChild(fragment);
   };
 
-  window.renderPins = renderPins;
+  var updatePins = function (elements) {
+    var mapFilters = document.querySelector('.map__filters');
+    var housingType = document.querySelector('#housing-type');
+    renderPins(elements);
+
+    mapFilters.addEventListener('change', function () {
+      renderPins(elements.slice().filter(function (it) {
+        if (housingType.value === 'any') {
+          return true;
+        }
+        return it.offer.type === housingType.value;
+      }));
+    });
+  };
+
+  window.updatePins = updatePins;
 })();

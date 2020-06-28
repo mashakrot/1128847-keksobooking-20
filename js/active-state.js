@@ -23,15 +23,16 @@
     adFormParts.forEach(function (part) {
       part.disabled = false;
     });
-    mapFiltersSelects.forEach(function (part) {
-      part.disabled = false;
-    });
+
     mapFiltersFieldsets.forEach(function (part) {
       part.disabled = false;
     });
 
     load(successHandler, errorHandler);
 
+    mapFiltersSelects.forEach(function (part) {
+      part.disabled = false;
+    });
 
     mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);
     mapPinMain.removeEventListener('keydown', onMapPinEnterPress);
