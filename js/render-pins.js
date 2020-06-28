@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_SIMILAR_ADS_COUNT = window.constants.MAX_SIMILAR_ADS_COUNT;
+
   var getPin = function (element) {
     var pin = document.querySelector('#pin').content.querySelector('.map__pin');
     var ad = pin.cloneNode(true);
@@ -20,9 +22,10 @@
     mapPinsList.forEach(function (element) {
       element.remove();
     });
-    for (var i = 0; i < elements.slice(0, 5).length; i++) {
-      fragment.appendChild(getPin(elements[i]));
-    }
+
+    elements.slice(0, MAX_SIMILAR_ADS_COUNT).forEach(function (element) {
+      fragment.appendChild(getPin(element));
+    });
 
     mapPins.appendChild(fragment);
   };
@@ -36,11 +39,8 @@
       renderPins(elements.slice().filter(function (it) {
         if (housingType.value === 'any') {
           return true;
-        } else if (it.offer.type === housingType.value) {
-          return true;
-        } else {
-          return false;
         }
+        return it.offer.type === housingType.value;
       }));
     });
   };
