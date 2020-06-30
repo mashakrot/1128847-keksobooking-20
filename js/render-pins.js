@@ -2,6 +2,7 @@
 
 (function () {
   var MAX_SIMILAR_ADS_COUNT = window.constants.MAX_SIMILAR_ADS_COUNT;
+  var openOneCard = window.openOneCard;
 
   var getPin = function (element) {
     var pin = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -34,14 +35,17 @@
     var mapFilters = document.querySelector('.map__filters');
     var housingType = document.querySelector('#housing-type');
     renderPins(elements);
+    openOneCard(elements);
 
     mapFilters.addEventListener('change', function () {
-      renderPins(elements.slice().filter(function (it) {
+      var filteredList = elements.slice().filter(function (it) {
         if (housingType.value === 'any') {
           return true;
         }
         return it.offer.type === housingType.value;
-      }));
+      });
+      renderPins(filteredList);
+      openOneCard(filteredList);
     });
   };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var map = window.inactiveState.map;
+  var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
 
   var flexNormalize = function (number, forms) {
@@ -93,6 +93,5 @@
     return adCard;
   };
 
-  renderCard(/*  */);
-
+  window.renderCard = renderCard;
 })();
