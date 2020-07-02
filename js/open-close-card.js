@@ -23,20 +23,6 @@
     }
   };
 
-  var onPinClick = function (elements, mapPinsArray, element) {
-    var index = mapPinsArray.indexOf(element);
-    var mapCards = document.querySelectorAll('.map__card');
-    mapCards[0].remove();
-
-    renderCard(elements[index]);
-
-    closeCard();
-
-    // Вот как ты и сказал я сначала удаляю, а потом отрисовываю, но он не находит mapCard и не отрисовывает карточку
-    // Предыдущий вариант хоть работал
-  };
-  // Вот я вынесла всю эту часть в отдельную функцию но теперь ничего неработает. Дальше Я ничего не меняла так как на этом шаге уже не работает
-
   var openCard = function (elements) {
     var mapPins = document.querySelector('.map__pins');
     var mapPinsList = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -44,9 +30,22 @@
 
 
     mapPinsArray.forEach(function (element) {
-      element.addEventListener('click', onPinClick(elements, mapPinsArray, element));
 
-      element.addEventListener('keydown', function (evt) {
+
+      var onPinClick = function () {
+        var index = mapPinsArray.indexOf(element);
+        var mapCards = document.querySelectorAll('.map__card');
+        mapCards[0].remove();
+
+        renderCard(elements[index]);
+
+        closeCard();
+
+        // Вот как ты и сказал я сначала удаляю, а потом отрисовываю, но он не находит mapCard и не отрисовывает карточку
+        // Предыдущий вариант хоть работал
+      };
+
+      var onPinKeyDown = function (evt) {
         if (evt.key === 'Enter') {
           var index = mapPinsArray.indexOf(element);
 
@@ -59,8 +58,10 @@
             mapCards[0].remove();
           }
         }
-      });
+      };
 
+      element.addEventListener('click', onPinClick);
+      element.addEventListener('keydown', onPinKeyDown);
     });
   };
 
