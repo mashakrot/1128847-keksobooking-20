@@ -2,7 +2,7 @@
 
 (function () {
   var MAX_SIMILAR_ADS_COUNT = window.constants.MAX_SIMILAR_ADS_COUNT;
-  var openOneCard = window.openOneCard;
+  var openCard = window.openCard;
 
   var getPin = function (element) {
     var pin = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -35,7 +35,7 @@
     var mapFilters = document.querySelector('.map__filters');
     var housingType = document.querySelector('#housing-type');
     renderPins(elements);
-    openOneCard(elements);
+    openCard(elements);
 
     mapFilters.addEventListener('change', function () {
       var filteredList = elements.slice().filter(function (it) {
@@ -45,7 +45,7 @@
         return it.offer.type === housingType.value;
       });
       renderPins(filteredList);
-      openOneCard(filteredList);
+      openCard(filteredList);
     });
   };
 
