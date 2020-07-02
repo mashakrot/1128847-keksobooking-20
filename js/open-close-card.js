@@ -23,40 +23,31 @@
     }
   };
 
-  var openCard = function (elements) {
+  var setOpenListeners = function (elements) {
     var mapPins = document.querySelector('.map__pins');
     var mapPinsList = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
     var mapPinsArray = Array.from(mapPinsList);
 
 
     mapPinsArray.forEach(function (element) {
-
-
-      var onPinClick = function () {
+      var showCard = function () {
         var index = mapPinsArray.indexOf(element);
-        var mapCards = document.querySelectorAll('.map__card');
-        mapCards[0].remove();
+        var mapCard = document.querySelector('.map__card');
+        if (mapCard) {
+          mapCard.remove();
+        }
 
         renderCard(elements[index]);
+        setCloseListeners();
+      };
 
-        closeCard();
-
-        // Вот как ты и сказал я сначала удаляю, а потом отрисовываю, но он не находит mapCard и не отрисовывает карточку
-        // Предыдущий вариант хоть работал
+      var onPinClick = function () {
+        showCard();
       };
 
       var onPinKeyDown = function (evt) {
         if (evt.key === 'Enter') {
-          var index = mapPinsArray.indexOf(element);
-
-          renderCard(elements[index]);
-
-          closeCard();
-
-          var mapCards = document.querySelectorAll('.map__card');
-          if (mapCards.length === 2) {
-            mapCards[0].remove();
-          }
+          showCard();
         }
       };
 
@@ -66,7 +57,7 @@
   };
 
 
-  var closeCard = function () {
+  var setCloseListeners = function () {
     var mapCards = document.querySelectorAll('.map__card');
     var popupClose = document.querySelectorAll('.popup__close');
 
@@ -80,5 +71,5 @@
   };
 
 
-  window.openCard = openCard;
+  window.setOpenListeners = setOpenListeners;
 })();
