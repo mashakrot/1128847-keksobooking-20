@@ -8,7 +8,7 @@
   var adFormParts = adForm.querySelectorAll('fieldset');
   var mapFiltersSelects = mapFilters.querySelectorAll('select');
   var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
-  var fillInactiveState = window.address.fillInactiveState;
+  var fillInactiveState = window.form.fillInactiveState;
   var onMapPinMouseDown = window.callback.mouseDown;
   var onMapPinEnterPress = window.callback.enterPress;
 
