@@ -8,9 +8,9 @@
   var adFormParts = adForm.querySelectorAll('fieldset');
   var mapFiltersSelects = mapFilters.querySelectorAll('select');
   var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
-  var fillInactiveState = window.form.fillInactiveState;
-  var onMapPinMouseDown = window.callback.mouseDown;
-  var onMapPinEnterPress = window.callback.enterPress;
+  var fillInactiveState = window.move.fillInactiveState;
+  var onMapPinMouseDown = window.move.onMouseDown;
+  var onMapPinEnterPress = window.move.enterPress;
 
   var switchToInactiveSate = function () {
     var mapPinsList = document.querySelectorAll('.map__pin:not(.map__pin--main)');

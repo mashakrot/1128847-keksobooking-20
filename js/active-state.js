@@ -7,9 +7,9 @@
   var mapFiltersSelects = window.inactiveState.mapFiltersSelects;
   var mapFiltersFieldsets = window.inactiveState.mapFiltersFieldsets;
   var mapPinMain = window.inactiveState.mapPinMain;
-  var fillActiveState = window.form.fillActiveState;
-  var onMapPinMouseDown = window.callback.mouseDown;
-  var onMapPinEnterPress = window.callback.enterPress;
+  var fillActiveState = window.move.fillActiveState;
+  var onMapPinMouseDown = window.move.mouseDown;
+  var onMapPinEnterPress = window.move.enterPress;
 
   var load = window.backend.load;
   var errorHandler = window.callback.errorHandler;
