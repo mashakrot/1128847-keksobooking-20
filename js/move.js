@@ -63,13 +63,21 @@
         }
 
         var top = parseInt(pinMain.style.top, 10);
-        if (top <= MAP_MIN_TOP || top >= MAP_MAX_TOP) {
-          document.removeEventListener('mousemove', onMouseMove);
+        if (top <= MAP_MIN_TOP) {
+          pinMain.style.top = MAP_MIN_TOP + 'px';
+        }
+
+        if (top >= MAP_MAX_TOP) {
+          pinMain.style.top = MAP_MAX_TOP + 'px';
         }
 
         var left = parseInt(pinMain.style.left, 10);
-        if (left <= MAP_MIN_LEFT || left >= pinMaxLeft) {
-          document.removeEventListener('mousemove', onMouseMove);
+        if (left <= MAP_MIN_LEFT) {
+          pinMain.style.left = MAP_MIN_LEFT + 'px';
+        }
+
+        if (left >= pinMaxLeft) {
+          pinMain.style.left = pinMaxLeft + 'px';
         }
       };
 
