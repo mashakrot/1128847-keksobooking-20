@@ -8,6 +8,7 @@
   var MAP_MIN_LEFT = window.constants.MAP_MIN_LEFT;
   var SCREEN_MAX_WIDTH = window.constants.SCREEN_MAX_WIDTH;
 
+  var map = document.querySelector('.map');
   var pinMain = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
 
@@ -31,8 +32,9 @@
 
   var onMapPinMouseDown = function (evt) {
     if (evt.button === 0) {
-      window.activeState.switch();
-
+      if (map.classList.contains('map--faded')) {
+        window.activeState.switch();
+      }
 
       var startCoords = {
         x: evt.clientX,
