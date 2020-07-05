@@ -3,6 +3,7 @@
 (function () {
   var PIN_HEIGHT = window.constants.PIN_HEIGHT;
   var PIN_WIDTH = window.constants.PIN_WIDTH;
+  var PIN_WIDTH_HALF = window.constants.PIN_WIDTH_HALF;
   var MAP_MIN_TOP = window.constants.MAP_MIN_TOP;
   var MAP_MAX_TOP = window.constants.MAP_MAX_TOP;
   var MAP_MIN_LEFT = window.constants.MAP_MIN_LEFT;
@@ -24,7 +25,7 @@
   var fillAddressFieldActiveState = function () {
     var left = parseInt(pinMain.style.left, 10);
     var top = parseInt(pinMain.style.top, 10);
-    var pinLeft = Math.floor(left + PIN_WIDTH / 2);
+    var pinLeft = Math.floor(left + PIN_WIDTH_HALF);
     var pinTop = Math.floor(top + PIN_HEIGHT);
 
     addressInput.value = pinLeft + ', ' + pinTop;
@@ -57,9 +58,9 @@
         fillAddressFieldActiveState();
 
         if (screen.width >= SCREEN_MAX_WIDTH) {
-          var pinMaxLeft = SCREEN_MAX_WIDTH - (PIN_WIDTH / 2);
+          var pinMaxLeft = SCREEN_MAX_WIDTH - PIN_WIDTH_HALF;
         } else {
-          pinMaxLeft = screen.width - (PIN_WIDTH / 2);
+          pinMaxLeft = screen.width - PIN_WIDTH_HALF;
         }
 
         var top = parseInt(pinMain.style.top, 10);
