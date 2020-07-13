@@ -8,6 +8,9 @@
   var MAP_MIN_LEFT = window.constants.MAP_MIN_LEFT;
   var SCREEN_MAX_WIDTH = window.constants.SCREEN_MAX_WIDTH;
 
+  var borderLeft = MAP_MIN_LEFT - PIN_WIDTH / 2;
+  var borderTop = MAP_MIN_TOP - PIN_HEIGHT;
+  var borderBottom = MAP_MAX_TOP - PIN_HEIGHT;
   var map = document.querySelector('.map');
   var pinMain = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
@@ -24,7 +27,7 @@
   var fillAddressFieldActiveState = function () {
     var left = parseInt(pinMain.style.left, 10);
     var top = parseInt(pinMain.style.top, 10);
-    var pinLeft = Math.floor(left + Math.floor((PIN_WIDTH / 2)));
+    var pinLeft = Math.floor(left + (PIN_WIDTH / 2));
     var pinTop = Math.floor(top + PIN_HEIGHT);
 
     addressInput.value = pinLeft + ', ' + pinTop;
@@ -52,31 +55,32 @@
           y: moveEvt.clientY
         };
 
-        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
-        fillAddressFieldActiveState();
-
         if (screen.width >= SCREEN_MAX_WIDTH) {
-          var pinMaxLeft = SCREEN_MAX_WIDTH - Math.ceil((PIN_WIDTH / 2));
+          var pinMaxLeft = SCREEN_MAX_WIDTH - (PIN_WIDTH / 2);
         } else {
-          pinMaxLeft = screen.width - Math.ceil((PIN_WIDTH / 2));
+          pinMaxLeft = screen.width - (PIN_WIDTH / 2);
         }
 
-        if (pinMain.offsetTop <= MAP_MIN_TOP) {
-          pinMain.style.top = MAP_MIN_TOP + 'px';
+        var newPointX = pinMain.offsetLeft - shift.x;
+        if (newPointX < borderLeft) {
+          newPointX = borderLeft;
+        }
+        if (newPointX > pinMaxLeft) {
+          newPointX = pinMaxLeft;
         }
 
-        if (pinMain.offsetTop >= MAP_MAX_TOP) {
-          pinMain.style.top = MAP_MAX_TOP + 'px';
+        var newPointY = pinMain.offsetTop - shift.y;
+        if (newPointY < borderTop) {
+          newPointY = borderTop;
         }
 
-        if (pinMain.offsetLeft <= MAP_MIN_LEFT) {
-          pinMain.style.left = MAP_MIN_LEFT + 'px';
+        if (newPointY > borderBottom) {
+          newPointY = borderBottom;
         }
 
-        if (pinMain.offsetLeft >= pinMaxLeft) {
-          pinMain.style.left = pinMaxLeft + 'px';
-        }
+        pinMain.style.top = newPointY + 'px';
+        pinMain.style.left = newPointX + 'px';
+        fillAddressFieldActiveState();
       };
 
       var onMouseUp = function () {
