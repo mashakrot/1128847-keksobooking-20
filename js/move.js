@@ -6,11 +6,12 @@
   var MAP_MIN_TOP = window.constants.MAP_MIN_TOP;
   var MAP_MAX_TOP = window.constants.MAP_MAX_TOP;
   var MAP_MIN_LEFT = window.constants.MAP_MIN_LEFT;
-  var SCREEN_MAX_WIDTH = window.constants.SCREEN_MAX_WIDTH;
 
-  var borderLeft = MAP_MIN_LEFT - PIN_WIDTH / 2;
-  var borderTop = MAP_MIN_TOP - PIN_HEIGHT;
-  var borderBottom = MAP_MAX_TOP - PIN_HEIGHT;
+  var MAP_LEFT_BORDER = MAP_MIN_LEFT - PIN_WIDTH / 2;
+  var MAP_TOP_BORDER = MAP_MIN_TOP - PIN_HEIGHT;
+  var MAP_BOTTOM_BORDER = MAP_MAX_TOP - PIN_HEIGHT;
+
+  var body = document.querySelector('body');
   var map = document.querySelector('.map');
   var pinMain = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
@@ -55,27 +56,22 @@
           y: moveEvt.clientY
         };
 
-        if (screen.width >= SCREEN_MAX_WIDTH) {
-          var pinMaxLeft = SCREEN_MAX_WIDTH - (PIN_WIDTH / 2);
-        } else {
-          pinMaxLeft = screen.width - (PIN_WIDTH / 2);
-        }
-
+        var pinMaxLeft = body.clientWidth - (PIN_WIDTH / 2);
         var newPointX = pinMain.offsetLeft - shift.x;
-        if (newPointX < borderLeft) {
-          newPointX = borderLeft;
+        if (newPointX < MAP_LEFT_BORDER) {
+          newPointX = MAP_LEFT_BORDER;
         }
         if (newPointX > pinMaxLeft) {
           newPointX = pinMaxLeft;
         }
 
         var newPointY = pinMain.offsetTop - shift.y;
-        if (newPointY < borderTop) {
-          newPointY = borderTop;
+        if (newPointY < MAP_TOP_BORDER) {
+          newPointY = MAP_TOP_BORDER;
         }
 
-        if (newPointY > borderBottom) {
-          newPointY = borderBottom;
+        if (newPointY > MAP_BOTTOM_BORDER) {
+          newPointY = MAP_BOTTOM_BORDER;
         }
 
         pinMain.style.top = newPointY + 'px';
