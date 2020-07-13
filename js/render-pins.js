@@ -38,6 +38,11 @@
     setOpenListeners(elements);
 
     mapFilters.addEventListener('change', function () {
+      var mapCards = document.querySelector('.map__card');
+      if (mapCards) {
+        mapCards.remove();
+      }
+
       var filteredList = elements.slice().filter(function (it) {
         if (housingType.value === 'any') {
           return true;
