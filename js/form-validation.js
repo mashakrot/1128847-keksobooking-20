@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var main = document.querySelector('main');
   var placeType = document.querySelector('#type');
   var placePrice = document.querySelector('#price');
 
@@ -9,6 +10,9 @@
   var timeout = timeFildset.querySelector('#timeout');
 
   var adForm = document.querySelector('.ad-form');
+  var save = window.backend.save;
+  var switchToInactiveSate = window.inactiveState.switchToInactiveSate;
+  var clearForm = window.inactiveState.clearForm;
 
   var onPlaceTypeChange = function () {
     if (placeType.value === 'bungalo') {
@@ -42,6 +46,62 @@
     }
   };
 
+  var formSuccessHandler = function () {
+    var success = document.querySelector('#success').content.querySelector('.success');
+    var successMessage = success.cloneNode(true);
+    document.body.insertAdjacentElement('afterbegin', successMessage);
+
+    var onSuccessMessageClick = function () {
+      successMessage.remove();
+      window.removeEventListener('click', onSuccessMessageClick);
+
+      clearForm();
+      switchToInactiveSate();
+    };
+
+    var onSuccessMessageEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        successMessage.remove();
+        window.removeEventListener('keydown', onSuccessMessageEscPress);
+
+        clearForm();
+        switchToInactiveSate();
+      }
+    };
+
+    if (successMessage) {
+      window.addEventListener('keydown', onSuccessMessageEscPress);
+      window.addEventListener('click', onSuccessMessageClick);
+    }
+
+  };
+
+  var formErrorHandler = function () {
+    var error = document.querySelector('#error').content.querySelector('.error');
+    var errorMessage = error.cloneNode(true);
+    main.insertAdjacentElement('afterbegin', errorMessage);
+
+    var errorClose = document.querySelector('.error__button');
+
+    var onErrorCloseClick = function () {
+      errorMessage.remove();
+      window.removeEventListener('click', onErrorCloseClick);
+    };
+
+    var onErrorMessageEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        errorMessage.remove();
+        window.removeEventListener('keydown', onErrorMessageEscPress);
+      }
+    };
+
+    if (errorMessage) {
+      errorClose.addEventListener('click', onErrorCloseClick);
+      window.addEventListener('click', onErrorCloseClick);
+      window.addEventListener('keydown', onErrorMessageEscPress);
+    }
+  };
+
   timein.addEventListener('change', function () {
     timeout.value = timein.value;
   });
@@ -52,4 +112,9 @@
 
   adForm.addEventListener('change', onFormElementChange);
   placeType.addEventListener('change', onPlaceTypeChange);
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    save(new FormData(adForm), formSuccessHandler, formErrorHandler);
+  });
 })();

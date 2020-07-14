@@ -6,6 +6,7 @@
     PIN_HEIGHT: 84,
     TIMEOUT_IN_MS: 10000,
     URL: 'https://javascript.pages.academy/keksobooking/data',
+    URL_POST: 'https://javascript.pages.academy/keksobooking',
     MAX_SIMILAR_ADS_COUNT: 5,
     MAP_MIN_TOP: 130,
     MAP_MAX_TOP: 630,
