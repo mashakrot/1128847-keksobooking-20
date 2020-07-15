@@ -16,18 +16,19 @@
   var pinMain = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
 
+  var INACTIVE_STATE_PIN_LEFT = pinMain.offsetLeft;
+  var INACTIVE_STATE_PIN_TOP = pinMain.offsetTop;
+
   var fillAddressFieldInactiveState = function () {
-    var left = parseInt(pinMain.style.left, 10);
-    var top = parseInt(pinMain.style.top, 10);
-    var pinLeft = Math.floor(left + PIN_WIDTH / 2);
-    var pinTop = Math.floor(top + PIN_WIDTH / 2);
+    var pinLeft = Math.floor(INACTIVE_STATE_PIN_LEFT + PIN_WIDTH / 2);
+    var pinTop = Math.floor(INACTIVE_STATE_PIN_TOP + PIN_WIDTH / 2);
 
     addressInput.value = pinLeft + ', ' + pinTop;
   };
 
   var fillAddressFieldActiveState = function () {
-    var left = parseInt(pinMain.style.left, 10);
-    var top = parseInt(pinMain.style.top, 10);
+    var left = pinMain.offsetLeft;
+    var top = pinMain.offsetTop;
     var pinLeft = Math.floor(left + (PIN_WIDTH / 2));
     var pinTop = Math.floor(top + PIN_HEIGHT);
 

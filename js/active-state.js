@@ -3,7 +3,6 @@
 (function () {
   var map = window.inactiveState.map;
   var adForm = window.inactiveState.adForm;
-  var formReset = adForm.querySelector('.ad-form__reset');
   var adFormParts = window.inactiveState.adFormParts;
   var mapFiltersSelects = window.inactiveState.mapFiltersSelects;
   var mapFiltersFieldsets = window.inactiveState.mapFiltersFieldsets;
@@ -38,12 +37,6 @@
     mapPinMain.removeEventListener('mousedown', onMapPinMouseDown);
     mapPinMain.removeEventListener('keydown', onMapPinEnterPress);
   };
-
-  formReset.addEventListener('click', function () {
-    fillActiveState();
-  });
-
-  // Вот эта ↑ часть не работает и я не знаю как сделать так что бы он после очистки формы вновь заполнял поле адреса
 
   window.activeState = {
     switch: switchToActiveState

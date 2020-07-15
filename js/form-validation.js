@@ -10,9 +10,11 @@
   var timeout = timeFildset.querySelector('#timeout');
 
   var adForm = document.querySelector('.ad-form');
+  var formReset = adForm.querySelector('.ad-form__reset');
   var save = window.backend.save;
-  var switchToInactiveSate = window.inactiveState.switchToInactiveSate;
+  var switchToInactiveState = window.inactiveState.switch;
   var clearForm = window.inactiveState.clearForm;
+  var clearFilters = window.inactiveState.clearFilters;
 
   var onPlaceTypeChange = function () {
     if (placeType.value === 'bungalo') {
@@ -49,14 +51,15 @@
   var formSuccessHandler = function () {
     var success = document.querySelector('#success').content.querySelector('.success');
     var successMessage = success.cloneNode(true);
-    document.body.insertAdjacentElement('afterbegin', successMessage);
+    main.insertAdjacentElement('afterbegin', successMessage);
 
     var onSuccessMessageClick = function () {
       successMessage.remove();
       window.removeEventListener('click', onSuccessMessageClick);
 
       clearForm();
-      switchToInactiveSate();
+      clearFilters();
+      switchToInactiveState();
     };
 
     var onSuccessMessageEscPress = function (evt) {
@@ -65,7 +68,8 @@
         window.removeEventListener('keydown', onSuccessMessageEscPress);
 
         clearForm();
-        switchToInactiveSate();
+        clearFilters();
+        switchToInactiveState();
       }
     };
 
@@ -74,6 +78,10 @@
       window.addEventListener('click', onSuccessMessageClick);
     }
 
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
   };
 
   var formErrorHandler = function () {
@@ -100,6 +108,21 @@
       window.addEventListener('click', onErrorCloseClick);
       window.addEventListener('keydown', onErrorMessageEscPress);
     }
+
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  var onResetButtonClick = function () {
+    clearForm();
+    clearFilters();
+    switchToInactiveState();
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
   };
 
   timein.addEventListener('change', function () {
@@ -112,6 +135,7 @@
 
   adForm.addEventListener('change', onFormElementChange);
   placeType.addEventListener('change', onPlaceTypeChange);
+  formReset.addEventListener('click', onResetButtonClick);
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
