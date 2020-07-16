@@ -3,6 +3,7 @@
 (function () {
   window.constants = {
     PIN_WIDTH: 64,
+    PIN_HALF_WIDTH: 32,
     PIN_HEIGHT: 84,
     TIMEOUT_IN_MS: 10000,
     URL: 'https://javascript.pages.academy/keksobooking/data',

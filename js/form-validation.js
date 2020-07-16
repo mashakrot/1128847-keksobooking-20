@@ -10,6 +10,7 @@
   var timeout = timeFildset.querySelector('#timeout');
 
   var adForm = document.querySelector('.ad-form');
+  var formSubmit = adForm.querySelector('.ad-form__submit');
   var formReset = adForm.querySelector('.ad-form__reset');
   var save = window.backend.save;
   var switchToInactiveState = window.inactiveState.switch;
@@ -49,6 +50,11 @@
   };
 
   var formSuccessHandler = function () {
+    formSubmit.blur();
+    clearForm();
+    clearFilters();
+    switchToInactiveState();
+
     var success = document.querySelector('#success').content.querySelector('.success');
     var successMessage = success.cloneNode(true);
     main.insertAdjacentElement('afterbegin', successMessage);
@@ -56,20 +62,12 @@
     var onSuccessMessageClick = function () {
       successMessage.remove();
       window.removeEventListener('click', onSuccessMessageClick);
-
-      clearForm();
-      clearFilters();
-      switchToInactiveState();
     };
 
     var onSuccessMessageEscPress = function (evt) {
       if (evt.key === 'Escape') {
         successMessage.remove();
         window.removeEventListener('keydown', onSuccessMessageEscPress);
-
-        clearForm();
-        clearFilters();
-        switchToInactiveState();
       }
     };
 
@@ -135,7 +133,7 @@
 
   adForm.addEventListener('change', onFormElementChange);
   placeType.addEventListener('change', onPlaceTypeChange);
-  formReset.addEventListener('click', onResetButtonClick);
+  formReset.addEventListener('mouseup', onResetButtonClick);
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
