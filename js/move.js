@@ -3,6 +3,7 @@
 (function () {
   var PIN_HEIGHT = window.constants.PIN_HEIGHT;
   var PIN_WIDTH = window.constants.PIN_WIDTH;
+  var PIN_HALF_WIDTH = window.constants.PIN_HALF_WIDTH;
   var MAP_MIN_TOP = window.constants.MAP_MIN_TOP;
   var MAP_MAX_TOP = window.constants.MAP_MAX_TOP;
   var MAP_MIN_LEFT = window.constants.MAP_MIN_LEFT;
@@ -16,19 +17,20 @@
   var pinMain = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
 
+  var INACTIVE_STATE_PIN_LEFT = pinMain.offsetLeft;
+  var INACTIVE_STATE_PIN_TOP = pinMain.offsetTop;
+
   var fillAddressFieldInactiveState = function () {
-    var left = parseInt(pinMain.style.left, 10);
-    var top = parseInt(pinMain.style.top, 10);
-    var pinLeft = Math.floor(left + PIN_WIDTH / 2);
-    var pinTop = Math.floor(top + PIN_WIDTH / 2);
+    var pinLeft = Math.floor(INACTIVE_STATE_PIN_LEFT + PIN_HALF_WIDTH);
+    var pinTop = Math.floor(INACTIVE_STATE_PIN_TOP + PIN_HALF_WIDTH);
 
     addressInput.value = pinLeft + ', ' + pinTop;
   };
 
   var fillAddressFieldActiveState = function () {
-    var left = parseInt(pinMain.style.left, 10);
-    var top = parseInt(pinMain.style.top, 10);
-    var pinLeft = Math.floor(left + (PIN_WIDTH / 2));
+    var left = pinMain.offsetLeft;
+    var top = pinMain.offsetTop;
+    var pinLeft = Math.floor(left + PIN_HALF_WIDTH);
     var pinTop = Math.floor(top + PIN_HEIGHT);
 
     addressInput.value = pinLeft + ', ' + pinTop;

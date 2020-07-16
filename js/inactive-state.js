@@ -6,13 +6,61 @@
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapFilters = document.querySelector('.map__filters');
   var adFormParts = adForm.querySelectorAll('fieldset');
+
+  var adTitle = adForm.querySelector('#title');
+  var adPrice = adForm.querySelector('#price');
+  var adDescription = adForm.querySelector('#description');
+  var adFeatures = adForm.querySelectorAll('.feature__checkbox');
+  var filterPlaceFeatures = mapFilters.querySelectorAll('.map__checkbox');
+
   var mapFiltersSelects = mapFilters.querySelectorAll('select');
   var mapFiltersFieldsets = mapFilters.querySelectorAll('fieldset');
   var fillInactiveState = window.move.fillInactiveState;
   var onMapPinMouseDown = window.move.onMouseDown;
   var onMapPinEnterPress = window.move.enterPress;
 
-  var switchToInactiveSate = function () {
+  var clearInput = function (inputName, value) {
+    var name = document.querySelector(inputName);
+    if (name.value !== value) {
+      name.value = value;
+    }
+  };
+
+  var clearCheckbox = function (checkbox) {
+    checkbox.forEach(function (feature) {
+      if (feature.checked) {
+        feature.checked = false;
+      }
+    });
+  };
+
+  var clearForm = function () {
+    adTitle.value = '';
+    adDescription.value = '';
+    adPrice.value = '';
+    mapPinMain.style = 'left: 570px; top: 375px;';
+
+    adPrice.placeholder = 1000;
+    adPrice.min = 1000;
+    clearInput('#type', 'flat');
+    clearInput('#capacity', '1');
+    clearInput('#room_number', '1');
+    clearInput('#timein', '12:00');
+    clearInput('#timeout', '12:00');
+
+    clearCheckbox(adFeatures);
+  };
+
+  var clearFilters = function () {
+    clearInput('#housing-type', 'any');
+    clearInput('#housing-price', 'any');
+    clearInput('#housing-rooms', 'any');
+    clearInput('#housing-guests', 'any');
+
+    clearCheckbox(filterPlaceFeatures);
+  };
+
+  var switchToInactiveState = function () {
     var mapPinsList = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     mapPinsList.forEach(function (pin) {
       pin.remove();
@@ -35,7 +83,7 @@
     mapPinMain.addEventListener('keydown', onMapPinEnterPress);
   };
 
-  switchToInactiveSate();
+  switchToInactiveState();
 
   window.inactiveState = {
     map: map,
@@ -44,6 +92,9 @@
     mapFilters: mapFilters,
     adFormParts: adFormParts,
     mapFiltersSelects: mapFiltersSelects,
-    mapFiltersFieldsets: mapFiltersFieldsets
+    mapFiltersFieldsets: mapFiltersFieldsets,
+    switch: switchToInactiveState,
+    clearForm: clearForm,
+    clearFilters: clearFilters
   };
 })();

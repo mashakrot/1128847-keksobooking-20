@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var main = document.querySelector('main');
   var placeType = document.querySelector('#type');
   var placePrice = document.querySelector('#price');
 
@@ -9,6 +10,12 @@
   var timeout = timeFildset.querySelector('#timeout');
 
   var adForm = document.querySelector('.ad-form');
+  var formSubmit = adForm.querySelector('.ad-form__submit');
+  var formReset = adForm.querySelector('.ad-form__reset');
+  var save = window.backend.save;
+  var switchToInactiveState = window.inactiveState.switch;
+  var clearForm = window.inactiveState.clearForm;
+  var clearFilters = window.inactiveState.clearFilters;
 
   var onPlaceTypeChange = function () {
     if (placeType.value === 'bungalo') {
@@ -42,6 +49,80 @@
     }
   };
 
+  var formSuccessHandler = function () {
+    formSubmit.blur();
+    clearForm();
+    clearFilters();
+    switchToInactiveState();
+
+    var success = document.querySelector('#success').content.querySelector('.success');
+    var successMessage = success.cloneNode(true);
+    main.insertAdjacentElement('afterbegin', successMessage);
+
+    var onSuccessMessageClick = function () {
+      successMessage.remove();
+      window.removeEventListener('click', onSuccessMessageClick);
+    };
+
+    var onSuccessMessageEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        successMessage.remove();
+        window.removeEventListener('keydown', onSuccessMessageEscPress);
+      }
+    };
+
+    if (successMessage) {
+      window.addEventListener('keydown', onSuccessMessageEscPress);
+      window.addEventListener('click', onSuccessMessageClick);
+    }
+
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  var formErrorHandler = function () {
+    var error = document.querySelector('#error').content.querySelector('.error');
+    var errorMessage = error.cloneNode(true);
+    main.insertAdjacentElement('afterbegin', errorMessage);
+
+    var errorClose = document.querySelector('.error__button');
+
+    var onErrorCloseClick = function () {
+      errorMessage.remove();
+      window.removeEventListener('click', onErrorCloseClick);
+    };
+
+    var onErrorMessageEscPress = function (evt) {
+      if (evt.key === 'Escape') {
+        errorMessage.remove();
+        window.removeEventListener('keydown', onErrorMessageEscPress);
+      }
+    };
+
+    if (errorMessage) {
+      errorClose.addEventListener('click', onErrorCloseClick);
+      window.addEventListener('click', onErrorCloseClick);
+      window.addEventListener('keydown', onErrorMessageEscPress);
+    }
+
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  var onResetButtonClick = function () {
+    clearForm();
+    clearFilters();
+    switchToInactiveState();
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
   timein.addEventListener('change', function () {
     timeout.value = timein.value;
   });
@@ -52,4 +133,10 @@
 
   adForm.addEventListener('change', onFormElementChange);
   placeType.addEventListener('change', onPlaceTypeChange);
+  formReset.addEventListener('mouseup', onResetButtonClick);
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    save(new FormData(adForm), formSuccessHandler, formErrorHandler);
+  });
 })();
