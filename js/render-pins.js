@@ -91,9 +91,9 @@
             return it.offer.features[i] === housingFeatures[i].value;
           }
         }
-        // if (!housingFeatures.checked) {
-        return true;
-        // }
+        if (!housingFeatures.checked) {
+          return true;
+        }
 
       });
 
