@@ -16,6 +16,7 @@
     SCREEN_MAX_WIDTH: 1200,
     DEBOUNCE_INTERVAL: 500,
     FILES_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
-    PREVIEW_PHOTO_WIDTH: 70
+    PREVIEW_PHOTO_WIDTH: 70,
+    SUCCESS_STATUS: 200
   };
 })();

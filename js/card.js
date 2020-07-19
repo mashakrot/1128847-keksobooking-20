@@ -4,6 +4,9 @@
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
 
+  var card = document.querySelector('#card').content.querySelector('.popup');
+  var adCard = card.cloneNode(true);
+
   var flexNormalize = function (number, forms) {
     number = Number(number);
     if (number % 10 > 100 && number % 100 < 15) {
@@ -30,8 +33,8 @@
     return flexNormalize(number, forms);
   };
 
-  var renderPopupPhotos = function (adCard, element) {
-    var popupPhotos = adCard.querySelector('.popup__photos');
+  var renderPopupPhotos = function (ad, element) {
+    var popupPhotos = ad.querySelector('.popup__photos');
     var fragment = document.createDocumentFragment();
     popupPhotos.innerHTML = '';
     if (element.offer.photos.length > 0) {
@@ -50,8 +53,8 @@
     popupPhotos.appendChild(fragment);
   };
 
-  var renderPopupFeatures = function (adCard, element) {
-    var popupFeatures = adCard.querySelector('.popup__features');
+  var renderPopupFeatures = function (ad, element) {
+    var popupFeatures = ad.querySelector('.popup__features');
     var fragment = document.createDocumentFragment();
     popupFeatures.innerHTML = '';
     if (element.offer.features.length > 0) {
@@ -68,8 +71,6 @@
   };
 
   var renderCard = function (element) {
-    var card = document.querySelector('#card').content.querySelector('.popup');
-    var adCard = card.cloneNode(true);
     var typesMap = {
       'flat': 'Квартира',
       'bungalo': 'Бунгало',

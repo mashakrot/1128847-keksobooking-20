@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  var success = document.querySelector('#success').content.querySelector('.success');
+  var successMessage = success.cloneNode(true);
+
+  var error = document.querySelector('#error').content.querySelector('.error');
+  var errorMessage = error.cloneNode(true);
+
   var main = document.querySelector('main');
   var placeType = document.querySelector('#type');
   var placePrice = document.querySelector('#price');
@@ -55,8 +61,6 @@
     clearFilters();
     switchToInactiveState();
 
-    var success = document.querySelector('#success').content.querySelector('.success');
-    var successMessage = success.cloneNode(true);
     main.insertAdjacentElement('afterbegin', successMessage);
 
     var onSuccessMessageClick = function () {
@@ -83,11 +87,8 @@
   };
 
   var formErrorHandler = function () {
-    var error = document.querySelector('#error').content.querySelector('.error');
-    var errorMessage = error.cloneNode(true);
-    main.insertAdjacentElement('afterbegin', errorMessage);
-
     var errorClose = document.querySelector('.error__button');
+    main.insertAdjacentElement('afterbegin', errorMessage);
 
     var onErrorCloseClick = function () {
       errorMessage.remove();

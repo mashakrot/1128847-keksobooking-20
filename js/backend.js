@@ -4,11 +4,12 @@
   var TIMEOUT_IN_MS = window.constants.TIMEOUT_IN_MS;
   var URL = window.constants.URL;
   var URL_POST = window.constants.URL_POST;
+  var SUCCESS_STATUS = window.constants.SUCCESS_STATUS;
 
   var requestHttp = function (xhr, onLoad, onError) {
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);

@@ -34,6 +34,32 @@
     });
   };
 
+  var clearHeaderPhotoPreview = function () {
+    var previewBlock = document.querySelector('.ad-form-header__preview');
+    var headerImgPreview = previewBlock.querySelector('img');
+    headerImgPreview.src = 'img/muffin-grey.svg';
+    headerImgPreview.width = 40;
+    headerImgPreview.height = 44;
+    headerImgPreview.style = 'border-radius: 0;';
+    previewBlock.style = 'padding: 0 15px;';
+  };
+
+  var clearPhotoPreview = function () {
+    var formPhotos = document.querySelectorAll('.ad-form__img');
+    var formPreview = document.querySelectorAll('.ad-form__photo');
+    formPhotos.forEach(function (photo) {
+      photo.remove();
+    });
+    for (var i = formPreview.length - 1; i > 0; i--) {
+      formPreview[i].remove();
+    }
+
+    var placeImgPreview = document.querySelectorAll('.ad-form__photo');
+    var img = document.createElement('img');
+    img.classList.add('ad-form__img');
+    placeImgPreview[placeImgPreview.length - 1].appendChild(img);
+  };
+
   var clearForm = function () {
     adTitle.value = '';
     adDescription.value = '';
@@ -50,22 +76,8 @@
 
     clearCheckbox(adFeatures);
 
-    var previewBlock = document.querySelector('.ad-form-header__preview');
-    var headerImgPreview = previewBlock.querySelector('img');
-    headerImgPreview.src = 'img/muffin-grey.svg';
-    headerImgPreview.width = 40;
-    headerImgPreview.height = 44;
-    headerImgPreview.style = 'border-radius: 0;';
-    previewBlock.style = 'padding: 0 15px;';
-
-    var formPhotos = document.querySelectorAll('.ad-form__img');
-    var formPreview = document.querySelectorAll('.ad-form__photo');
-    formPhotos.forEach(function (photo) {
-      photo.remove();
-    });
-    for (var i = formPreview.length - 1; i > 0; i--) {
-      formPreview[i].remove();
-    }
+    clearHeaderPhotoPreview();
+    clearPhotoPreview();
   };
 
   var clearFilters = function () {
