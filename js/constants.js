@@ -9,10 +9,13 @@
     URL: 'https://javascript.pages.academy/keksobooking/data',
     URL_POST: 'https://javascript.pages.academy/keksobooking',
     MAX_SIMILAR_ADS_COUNT: 5,
+    MAX_PLACE_PHOTOS_COUNT: 10,
     MAP_MIN_TOP: 130,
     MAP_MAX_TOP: 630,
     MAP_MIN_LEFT: 0,
     SCREEN_MAX_WIDTH: 1200,
-    DEBOUNCE_INTERVAL: 500
+    DEBOUNCE_INTERVAL: 500,
+    FILES_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+    PREVIEW_PHOTO_WIDTH: 70
   };
 })();
